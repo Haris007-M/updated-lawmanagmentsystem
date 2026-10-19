@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import {
@@ -41,7 +42,7 @@ export default async function Home() {
       <main id="main">
         {/* ---------- hero ---------- */}
         <section className="force-light relative overflow-hidden border-b border-slate-200/70 bg-navy-950 text-white">
-          <div className="grid-pattern absolute inset-0 [mask-image:radial-gradient(ellipse_at_70%_30%,black,transparent_70%)]" aria-hidden /><div className="absolute end-0 top-0 h-[28rem] w-[40rem] rounded-full bg-gold-500/10 blur-3xl" aria-hidden />
+          <Image src="/images/hero.jpg" alt="" fill priority sizes="100vw" className="object-cover object-right opacity-70 rtl:-scale-x-100" /><div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-950/25 rtl:bg-gradient-to-l" aria-hidden /><div className="grid-pattern absolute inset-0 [mask-image:radial-gradient(ellipse_at_70%_30%,black,transparent_70%)]" aria-hidden /><div className="absolute end-0 top-0 h-[28rem] w-[40rem] rounded-full bg-gold-500/10 blur-3xl" aria-hidden />
           <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 sm:pb-32 sm:pt-28">
             <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-medium text-gold-300 ring-1 ring-white/15 backdrop-blur">
               <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> {t('site.hero.badge')}
@@ -117,7 +118,7 @@ export default async function Home() {
 
         {/* ---------- security ---------- */}
         <section aria-labelledby="sec-title" className="force-light relative overflow-hidden bg-navy-900 py-20 text-white">
-          <div className="grid-pattern absolute inset-0 opacity-70" aria-hidden />
+          <Image src="/images/banner-client.jpg" alt="" fill sizes="100vw" className="object-cover object-right opacity-50 rtl:-scale-x-100" /><div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-950/30 rtl:bg-gradient-to-l" aria-hidden /><div className="grid-pattern absolute inset-0 opacity-70" aria-hidden />
           <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
             <div className="max-w-xl">
               <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-gold-400 ring-1 ring-white/15"><Lock className="h-6 w-6" aria-hidden /></span>

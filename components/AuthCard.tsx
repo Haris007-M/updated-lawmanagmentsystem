@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { Lock, ShieldCheck, Users } from 'lucide-react'
 import { BRAND } from '@/lib/brand'
@@ -24,6 +25,8 @@ export default async function AuthCard({
     <main className="grid min-h-dvh lg:grid-cols-[1.05fr_1fr]">
       {/* brand panel (desktop) */}
       <aside className="force-light relative hidden flex-col justify-between overflow-hidden border-e border-slate-200/70 bg-navy-950 p-12 text-white lg:flex">
+        <Image src="/images/hero.jpg" alt="" fill priority sizes="55vw" className="object-cover object-right opacity-60 rtl:-scale-x-100" />
+        <div className="absolute inset-0 bg-gradient-to-br from-navy-950/95 via-navy-950/80 to-navy-950/40" aria-hidden />
         <div className="grid-pattern absolute inset-0 [mask-image:radial-gradient(ellipse_at_30%_40%,black,transparent_75%)]" aria-hidden />
         <div className="absolute -start-24 top-1/3 h-80 w-80 rounded-full bg-gold-500/10 blur-3xl" aria-hidden />
         <Link href="/" className="relative">

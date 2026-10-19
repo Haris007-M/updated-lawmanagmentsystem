@@ -56,7 +56,7 @@ export default async function AdminDashboard() {
   return (
     <>
       <DashboardBanner
-        image="/images/banner-admin.jpg"
+        image="/banner-admin.jpg"
         eyebrow={f.dayLong(todayISO())}
         title={t('adm.dash.welcome', { name: me.full_name?.split(' ')[0] ?? t('role.super_admin') })}
         subtitle={t('adm.dash.subtitle')}
