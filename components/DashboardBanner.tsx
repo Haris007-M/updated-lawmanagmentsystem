@@ -18,6 +18,7 @@ export default function DashboardBanner({
     <section className={`relative mb-6 flex flex-col justify-end overflow-hidden ${image ? 'sm:aspect-[1920/520]' : ''} rounded-xl border border-slate-200/80 bg-surface print:hidden`}>
       {image && (
         <>
+        {/* images updated */}
           <Image src={image} alt="" fill priority sizes="(min-width: 1024px) 1100px, 100vw" className="object-cover object-center rtl:-scale-x-100" />
           <div className="absolute inset-0 bg-gradient-to-r from-surface/90 via-surface/50 to-transparent rtl:bg-gradient-to-l" aria-hidden />
         </>
