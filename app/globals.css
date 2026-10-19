@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+/* LexDesk runs in ONE dark theme. The `dark` class on <html> is kept so `dark:` utilities still apply. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- Design tokens ----------
+   canvas   page background            surface  cards, panels
+   slate    neutral text + borders     (50 = faint fill ... 900 = brightest text)
+   brand    same neutrals, kept for older class names
+   gold     the single accent: primary actions, focus, active states
+   alert    errors and destructive actions only
+   navy     surfaces that sit below the canvas (sidebar, header bands) */
+@theme {
+  --color-canvas: #0b0f15;
+  --color-surface: #11161e;
+  --color-surface-2: #161c26;
+  --color-on-gold: #15110a;
+
+  --color-slate-50: #131922;
+  --color-slate-100: #18202b;
+  --color-slate-200: #232c39;
+  --color-slate-300: #313c4b;
+  --color-slate-400: #5f6b7c;
+  --color-slate-500: #8892a2;
+  --color-slate-600: #a5aebb;
+  --color-slate-700: #c3cad4;
+  --color-slate-800: #dde2e9;
+  --color-slate-900: #f2f4f7;
+
+  --color-brand-50: #141b25;
+  --color-brand-100: #1a2230;
+  --color-brand-200: #263042;
+  --color-brand-300: #3a4558;
+  --color-brand-400: #6f7b8d;
+  --color-brand-500: #929cab;
+  --color-brand-600: #b0b8c4;
+  --color-brand-700: #cdd3dc;
+  --color-brand-800: #e3e7ed;
+  --color-brand-900: #f5f7fa;
+  --color-brand-950: #ffffff;
+
+  --color-navy-700: #1a212c;
+  --color-navy-800: #121820;
+  --color-navy-900: #0d1218;
+  --color-navy-950: #080b10;
+
+  --color-gold-50: #1d1910;
+  --color-gold-100: #282115;
+  --color-gold-200: #3b311f;
+  --color-gold-300: #6e5c3e;
+  --color-gold-400: #d8bc8c;
+  --color-gold-500: #c9a96e;
+  --color-gold-600: #d6b885;
+  --color-gold-700: #e3cba1;
+  --color-gold-800: #eedcbc;
+
+  --color-alert-50: #26131a;
+  --color-alert-100: #33171e;
+  --color-alert-200: #552129;
+  --color-alert-700: #f4a3a3;
+  --color-alert-800: #f9c4c4;
+
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), var(--font-naskh), ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  /* headings use the same family (one font = faster and calmer); weight and tracking do the work */
+  --font-display: var(--font-inter), var(--font-naskh), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+/* Inside the old "always dark" bands keep light text tones readable */
+.force-light {
+  --color-slate-200: #dde2e9; --color-slate-300: #c3cad4; --color-slate-400: #a5aebb; --color-slate-500: #8892a2;
+  --color-gold-300: #e3cba1;
+}
+
+:root { color-scheme: dark; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  background: var(--color-canvas);
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-slate-700);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: -0.003em;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "ss01";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 { color: var(--color-slate-900); letter-spacing: -0.018em; }
+h1 { font-weight: 650; }
+.tabular, td, .font-display { font-variant-numeric: tabular-nums; }
+
+/* Urdu (Naskh script) needs more vertical room than Latin text */
+html[lang="ur"] body { line-height: 1.85; letter-spacing: 0; font-feature-settings: normal; }
+html[lang="ur"] h1, html[lang="ur"] h2, html[lang="ur"] h3 { line-height: 1.55; letter-spacing: 0; }
+html[lang="ur"] .tracking-wider, html[lang="ur"] .tracking-tight, html[lang="ur"] [class*="tracking-["] { letter-spacing: 0; }
+html[lang="ur"] .uppercase { text-transform: none; }
+
+::selection { background: rgba(201, 169, 110, 0.35); color: #fff; }
+
+/* keyboard focus is always visible */
+:focus-visible { outline: 2px solid var(--color-gold-500); outline-offset: 2px; border-radius: 6px; }
+
+a, button, summary, label { touch-action: manipulation; }
+
+/* inputs: one calm style everywhere */
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea {
+  background-color: var(--color-surface-2);
+  border-color: var(--color-slate-200);
+  color: var(--color-slate-900);
+}
+input::placeholder, textarea::placeholder { color: var(--color-slate-400); }
+input:hover:not(:disabled), select:hover:not(:disabled), textarea:hover:not(:disabled) { border-color: var(--color-slate-300); }
+input:focus, select:focus, textarea:focus { border-color: var(--color-gold-500) !important; }
+input[type="date"], input[type="datetime-local"], input[type="time"] { color-scheme: dark; }
+option { background: var(--color-surface-2); color: var(--color-slate-900); }
+
+/* page background: a faint top light, no images to download */
+.app-canvas {
+  background:
+    radial-gradient(1100px 420px at 70% -120px, rgba(201, 169, 110, 0.06), transparent 70%),
+    var(--color-canvas);
+}
+
+/* subtle dot grid used on hero / auth panels (pure CSS, no image) */
+.grid-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* hide the scrollbar on horizontally scrolling strips, keep them swipeable */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* thin, quiet scrollbars that show on hover */
+* { scrollbar-width: thin; scrollbar-color: transparent transparent; }
+*:hover { scrollbar-color: rgba(148, 163, 184, 0.28) transparent; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track, ::-webkit-scrollbar-corner { background: transparent; }
+::-webkit-scrollbar-thumb { background: transparent; border-radius: 999px; }
+*:hover::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.28); }
+::-webkit-scrollbar-thumb:hover { background: rgba(201, 169, 110, 0.55); }
+
+/* ---------- Motion ---------- */
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fade-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+.fade-in { animation: fade-in 180ms ease-out both; }
+main#main > div { animation: fade-in 160ms ease-out both; }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--color-slate-100) 25%, var(--color-slate-200) 37%, var(--color-slate-100) 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: 0.5rem;
+}
+@keyframes shimmer { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+/* ---------- Tables ----------
+   Wide screens: normal table. Phones: every row becomes a card.
+   Pure CSS (the cells carry data-label), so it works without JavaScript and keeps table semantics. */
+.data-table tbody tr { transition: background-color 120ms ease; }
+.data-table tbody tr:hover { background-color: rgba(255, 255, 255, 0.025); }
+
+@media (max-width: 639px) {
+  /* 16px stops iOS Safari from zooming the page when a field is focused */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="file"]), select, textarea { font-size: 16px; }
+
+  table.data-table, table.data-table tbody { display: block; width: 100%; }
+  table.data-table thead {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  table.data-table tbody tr {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.65rem 1rem;
+    padding: 1rem; border-top: 1px solid var(--color-slate-100);
+  }
+  table.data-table tbody tr:first-child { border-top: 0; }
+  table.data-table td { display: block; padding: 0; min-width: 0; overflow-wrap: anywhere; }
+  table.data-table td::before {
+    content: attr(data-label); display: block; margin-bottom: 2px; font-size: 11px; font-weight: 600;
+    letter-spacing: 0.04em; color: var(--color-slate-400);
+  }
+  /* first cell = the card title; cells without a label = the actions row */
+  table.data-table td:first-child { grid-column: 1 / -1; }
+  table.data-table td:first-child::before, table.data-table td[data-label=""]::before { display: none; }
+  table.data-table td[data-label=""] {
+    grid-column: 1 / -1; border-top: 1px dashed var(--color-slate-200); padding-top: 0.65rem;
+  }
+}
+
+/* ---------- Print: invoices, letters, cause lists (always black on white) ---------- */
+@media print {
+  :root { color-scheme: light; }
+  html, body { background: #fff !important; color: #000 !important; }
+  .print-sheet, .print-sheet * { color: #000 !important; background: transparent !important; border-color: #ccc !important; }
+  @page { margin: 16mm; }
+  .print-sheet { box-shadow: none !important; border: 0 !important; }
+}
