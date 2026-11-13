@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { Menu } from 'lucide-react'
+import { Menu, MessageCircle } from 'lucide-react'
 import { getI18n } from '@/lib/i18n'
+import { getWhatsAppHref } from '@/lib/site-config'
 import Logo from './Logo'
 import LanguageSwitch from './LanguageSwitch'
 import { buttonCls, secondaryBtnCls } from './ui'
@@ -8,6 +9,7 @@ import { buttonCls, secondaryBtnCls } from './ui'
 // Sticky public header. The mobile menu is a plain <details> element: works without JavaScript.
 export default async function SiteHeader() {
   const { t } = await getI18n()
+  const wa = await getWhatsAppHref()
   const links = [
     { href: '/#features', label: t('site.nav.features') },
     { href: '/pricing', label: t('site.nav.pricing') },
@@ -26,6 +28,12 @@ export default async function SiteHeader() {
 
         <div className="hidden items-center gap-2 md:flex">
           <LanguageSwitch variant="light" />
+          {wa && (
+            <a href={wa} target="_blank" rel="noopener noreferrer" aria-label={t('site.contact.whatsapp')} className={secondaryBtnCls}>
+              <MessageCircle className="h-4 w-4 text-emerald-600" aria-hidden />
+              <span className="hidden xl:inline">{t('site.contact.whatsapp')}</span>
+            </a>
+          )}
           <Link href="/login" className={secondaryBtnCls}>{t('site.nav.signIn')}</Link>
           <Link href="/contact" className={buttonCls}>{t('site.nav.trial')}</Link>
         </div>
@@ -45,6 +53,11 @@ export default async function SiteHeader() {
               <LanguageSwitch variant="light" className="flex-1 justify-center" />
             </div>
             <div className="mt-3 grid gap-2">
+              {wa && (
+                <a href={wa} target="_blank" rel="noopener noreferrer" className={secondaryBtnCls}>
+                  <MessageCircle className="h-4 w-4 text-emerald-600" aria-hidden /> {t('site.contact.whatsapp')}
+                </a>
+              )}
               <Link href="/login" className={secondaryBtnCls}>{t('site.nav.signIn')}</Link>
               <Link href="/contact" className={buttonCls}>{t('site.nav.trial')}</Link>
             </div>

@@ -7,8 +7,7 @@ import { getI18n } from '@/lib/i18n'
 import { BRAND } from '@/lib/brand'
 import { first, type SearchParams } from '@/lib/paging'
 import { PLANS } from '@/lib/plans'
-import { SITE } from '@/lib/site-config'
-import { whatsappLink } from '@/lib/whatsapp'
+import { SITE, getWhatsAppHref } from '@/lib/site-config'
 import { secondaryBtnCls } from '@/components/ui'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,7 +25,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   const { t } = await getI18n()
   const planParam = first(sp.plan)
   const plan = planParam in PLANS ? planParam : ''
-  const wa = SITE.whatsapp ? whatsappLink(SITE.whatsapp, t('site.contact.waText', { brand: BRAND.name })) : null
+  const wa = await getWhatsAppHref()
 
   return (
     <div className="min-h-dvh bg-canvas">
@@ -49,10 +48,14 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
                 <MessageCircle className="h-4 w-4 text-emerald-600" aria-hidden /> {t('site.contact.whatsapp')}
               </a>
             )}
-            <a href={`mailto:${SITE.email}`} className={secondaryBtnCls}>
-              <Mail className="h-4 w-4" aria-hidden /> {t('site.contact.emailUs')}
-            </a>
-            <p className="text-center text-xs text-slate-500" dir="ltr">{SITE.email}</p>
+            {SITE.email && (
+              <>
+                <a href={`mailto:${SITE.email}`} className={secondaryBtnCls}>
+                  <Mail className="h-4 w-4" aria-hidden /> {t('site.contact.emailUs')}
+                </a>
+                <p className="text-center text-xs text-slate-500" dir="ltr">{SITE.email}</p>
+              </>
+            )}
           </div>
         </aside>
       </main>

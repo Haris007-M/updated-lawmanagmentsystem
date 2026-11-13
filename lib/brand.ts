@@ -4,10 +4,10 @@ export const BRAND = {
   tagline: 'Practice management for modern law firms',
 }
 
-// Used by the Terms and Privacy pages. Set these in .env.local before launch.
+// Shown in the footer and on the Terms and Privacy pages. Set these in .env.local.
+// Nothing is shown for a value you leave empty, so no placeholder text ever reaches visitors.
 export const LEGAL = {
-  company: process.env.NEXT_PUBLIC_COMPANY_NAME ?? 'Your Company Name',
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? 'support@example.com',
-  jurisdiction: process.env.NEXT_PUBLIC_JURISDICTION ?? 'your jurisdiction',
-  updated: process.env.NEXT_PUBLIC_LEGAL_UPDATED ?? 'October 2026',
+  company: process.env.NEXT_PUBLIC_COMPANY_NAME || BRAND.name,
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '',
+  updated: process.env.NEXT_PUBLIC_LEGAL_UPDATED || '13 November 2026',
 }

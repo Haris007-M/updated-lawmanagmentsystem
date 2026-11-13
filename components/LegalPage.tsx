@@ -1,30 +1,30 @@
-import { AlertTriangle } from 'lucide-react'
 import { BRAND, LEGAL } from '@/lib/brand'
 import { getI18n } from '@/lib/i18n'
+import { SITE } from '@/lib/site-config'
 import { getLegalDoc } from '@/lib/site-legal'
 import SiteHeader from './SiteHeader'
 import SiteFooter from './SiteFooter'
 
-// Terms / Privacy. Renders in the visitor's language (RTL for Urdu). The "template" notice is ALWAYS shown.
+// Terms / Privacy. Renders in the visitor's language (RTL for Urdu).
 export default async function LegalPage({ kind }: { kind: 'terms' | 'privacy' }) {
   const { t, locale } = await getI18n()
   const doc = getLegalDoc(kind, locale, {
-    brand: BRAND.name, company: LEGAL.company, email: LEGAL.supportEmail, jurisdiction: LEGAL.jurisdiction,
+    brand: BRAND.name, company: LEGAL.company, email: LEGAL.supportEmail, whatsapp: SITE.whatsapp,
   })
   return (
     <div className="min-h-dvh bg-canvas">
       <SiteHeader />
       <main id="main" className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
-        <div role="note" className="mb-8 flex gap-3 rounded-xl border border-gold-300 bg-gold-50 px-4 py-3.5 text-sm text-gold-800">
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-          <div>
-            <p className="font-semibold">{t('site.legal.notice')}</p>
-            <p className="mt-1 leading-relaxed">{t('site.legal.noticeText')}</p>
-          </div>
-        </div>
-
         <h1 className="font-display text-3xl font-semibold tracking-tight text-brand-900 sm:text-4xl">{doc.title}</h1>
         <p className="mt-2 text-sm text-slate-500">{t('site.legal.updated', { date: LEGAL.updated })}</p>
+
+        <aside className="mt-6 rounded-xl border border-gold-300 bg-gold-50 px-5 py-4 text-gold-800">
+          <p className="text-sm font-semibold">{t('site.legal.summary')}</p>
+          <ul className="mt-2 list-disc space-y-1.5 ps-5 text-sm leading-relaxed marker:text-gold-600">
+            {doc.summary.map((s) => <li key={s}>{s}</li>)}
+          </ul>
+        </aside>
+
         {doc.intro.map((p) => <p key={p} className="mt-6 text-[15px] leading-7 text-slate-700">{p}</p>)}
 
         <nav aria-label={t('site.legal.toc')} className="mt-8 rounded-xl border border-slate-200 bg-surface p-4">
@@ -54,7 +54,7 @@ export default async function LegalPage({ kind }: { kind: 'terms' | 'privacy' })
         </article>
 
         <p className="mt-12 border-t border-slate-200 pt-6 text-sm text-slate-500">
-          {t('site.legal.contactUs', { email: LEGAL.supportEmail })}
+          {t('site.legal.contactUs', { contact: doc.contact })}
           <br />
           {t('site.legal.otherLang')}
         </p>

@@ -8,9 +8,11 @@ import type { LucideIcon } from 'lucide-react'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
 import SitePricing from '@/components/SitePricing'
+import AppPreview from '@/components/AppPreview'
 import { getI18n } from '@/lib/i18n'
 import { redirectSignedIn } from '@/lib/home'
 import { BRAND } from '@/lib/brand'
+import { getWhatsAppHref } from '@/lib/site-config'
 import { goldBtnCls, ghostOnDarkBtnCls } from '@/components/ui'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -28,10 +30,15 @@ const FEATURES: { icon: LucideIcon; n: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 }[] = [
   { icon: CalendarDays, n: 6 }, { icon: MessageCircle, n: 7 }, { icon: Languages, n: 8 }, { icon: UsersRound, n: 9 },
 ]
 
+const TRUST: { icon: LucideIcon; n: 1 | 2 | 3 | 4 }[] = [
+  { icon: CalendarDays, n: 1 }, { icon: FileText, n: 2 }, { icon: Languages, n: 3 }, { icon: ShieldCheck, n: 4 },
+]
+
 export default async function Home() {
   await redirectSignedIn()
   const { t } = await getI18n()
-  const roles = ['lawyer', 'junior', 'client'] as const
+  const wa = await getWhatsAppHref()
+  const roles =['lawyer', 'junior', 'client'] as const
   const steps = [1, 2, 3] as const
   const faqs = [1, 2, 3, 4, 5, 6] as const
   const secPoints = [1, 2, 3, 4] as const
@@ -42,21 +49,45 @@ export default async function Home() {
       <main id="main">
         {/* ---------- hero ---------- */}
         <section className="force-light relative overflow-hidden border-b border-slate-200/70 bg-navy-950 text-white">
-          <Image src="/images/hero.jpg" alt="" fill priority sizes="100vw" className="object-cover object-right opacity-70 rtl:-scale-x-100" /><div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-950/25 rtl:bg-gradient-to-l" aria-hidden /><div className="grid-pattern absolute inset-0 [mask-image:radial-gradient(ellipse_at_70%_30%,black,transparent_70%)]" aria-hidden /><div className="absolute end-0 top-0 h-[28rem] w-[40rem] rounded-full bg-gold-500/10 blur-3xl" aria-hidden />
-          <div className="relative mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 sm:pb-32 sm:pt-28">
-            <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-medium text-gold-300 ring-1 ring-white/15 backdrop-blur">
-              <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> {t('site.hero.badge')}
-            </p>
-            <h1 className="max-w-2xl text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-[3.6rem]">
-              {t('site.hero.title1')}<span className="text-gold-400">{t('site.hero.title2')}</span>{t('site.hero.title3')}<span className="text-gold-400">{t('site.hero.title4')}</span>
-            </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-300 sm:mt-6 sm:text-lg">{t('site.hero.sub')}</p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link href="/contact" className={goldBtnCls}>{t('site.hero.cta')}</Link>
-              <Link href="/pricing" className={`${ghostOnDarkBtnCls} px-6 py-3 text-base`}>{t('site.hero.cta2')}</Link>
+          <Image src="/images/hero-library.jpg" alt="" fill priority sizes="100vw" className="object-cover object-[50%_35%] opacity-80 rtl:-scale-x-100" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/75 to-navy-950/20 rtl:bg-gradient-to-l" aria-hidden />
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-navy-950/80 to-transparent" aria-hidden />
+          <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-4 pb-16 pt-14 sm:px-6 sm:pb-24 sm:pt-24 lg:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <p className="mb-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1.5 text-xs font-medium text-gold-300 ring-1 ring-white/15 backdrop-blur">
+                <ShieldCheck className="h-3.5 w-3.5" aria-hidden /> {t('site.hero.badge')}
+              </p>
+              <h1 className="max-w-2xl text-[2.1rem] font-semibold leading-[1.1] tracking-[-0.03em] sm:text-5xl">
+                {t('site.hero.title1')}<span className="text-gold-400">{t('site.hero.title2')}</span>{t('site.hero.title3')}<span className="text-gold-400">{t('site.hero.title4')}</span>
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-300 sm:mt-6 sm:text-lg">{t('site.hero.sub')}</p>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link href="/contact" className={goldBtnCls}>{t('site.hero.cta')}</Link>
+                {wa && (
+                  <a href={wa} target="_blank" rel="noopener noreferrer" className={`${ghostOnDarkBtnCls} h-11 px-5 text-sm`}>
+                    <MessageCircle className="h-4 w-4 text-emerald-400" aria-hidden /> {t('site.contact.whatsapp')}
+                  </a>
+                )}
+                <Link href="/pricing" className={`${ghostOnDarkBtnCls} h-11 px-5 text-sm`}>{t('site.hero.cta2')}</Link>
+              </div>
+              <p className="mt-5 flex max-w-xl items-start gap-2 text-sm font-medium text-gold-300">
+                <Check className="mt-0.5 h-4 w-4 shrink-0" aria-hidden /> {t('site.hero.note')}
+              </p>
             </div>
-            <p className="mt-5 text-sm text-slate-400">{t('site.hero.note')}</p>
+            <AppPreview />
           </div>
+        </section>
+
+        {/* ---------- trust strip ---------- */}
+        <section aria-label={t('site.trust.label')} className="border-b border-slate-200 bg-surface">
+          <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-x-6 gap-y-4 px-4 py-6 sm:px-6 lg:grid-cols-4">
+            {TRUST.map(({ icon: Icon, n }) => (
+              <li key={n} className="flex items-center gap-3 text-sm font-medium text-slate-700">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gold-100 text-gold-700"><Icon className="h-4 w-4" aria-hidden /></span>
+                {t(`site.trust.${n}` as const)}
+              </li>
+            ))}
+          </ul>
         </section>
 
         {/* ---------- features ---------- */}
@@ -79,18 +110,33 @@ export default async function Home() {
 
         {/* ---------- how it works ---------- */}
         <section aria-labelledby="how-title" className="border-y border-slate-200 bg-surface py-16 sm:py-24">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-gold-700">{t('site.how.eyebrow')}</p>
-            <h2 id="how-title" className="mt-2 text-center font-display text-3xl font-semibold tracking-tight text-brand-900">{t('site.how.title')}</h2>
-            <ol className="mt-12 grid gap-8 md:grid-cols-3">
-              {steps.map((n) => (
-                <li key={n} className="relative">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-navy-900 font-display text-lg font-semibold text-gold-400" aria-hidden>{n}</span>
-                  <h3 className="mt-4 text-base font-semibold text-brand-900">{t(`site.how.${n}.t` as const)}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{t(`site.how.${n}.d` as const)}</p>
-                </li>
-              ))}
-            </ol>
+          <div className="mx-auto grid max-w-6xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-2">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-700">{t('site.how.eyebrow')}</p>
+              <h2 id="how-title" className="mt-2 font-display text-3xl font-semibold tracking-tight text-brand-900 sm:text-4xl">{t('site.how.title')}</h2>
+              <ol className="mt-10 space-y-8">
+                {steps.map((n) => (
+                  <li key={n} className="flex gap-4">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-gold-500 font-display text-lg font-semibold text-on-gold" aria-hidden>{n}</span>
+                    <div>
+                      <h3 className="text-base font-semibold text-brand-900">{t(`site.how.${n}.t` as const)}</h3>
+                      <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{t(`site.how.${n}.d` as const)}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <Link href="/contact" className={`${goldBtnCls} mt-10`}>{t('site.hero.cta')}</Link>
+            </div>
+            <div className="relative">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 shadow-2xl shadow-black/40">
+                <Image src="/images/onboarding-meeting.jpg" alt={t('site.how.photoAlt')} fill sizes="(min-width: 1024px) 560px, 100vw" className="object-cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-navy-950/50 via-transparent to-transparent" aria-hidden />
+              </div>
+              <p className="force-light absolute -bottom-5 start-5 inline-flex items-center gap-2 rounded-xl border border-white/10 bg-navy-900 px-4 py-3 text-sm font-semibold text-white shadow-xl">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gold-500 text-on-gold"><Check className="h-4 w-4" aria-hidden /></span>
+                {t('site.trust.2')}
+              </p>
+            </div>
           </div>
         </section>
 
@@ -118,7 +164,8 @@ export default async function Home() {
 
         {/* ---------- security ---------- */}
         <section aria-labelledby="sec-title" className="force-light relative overflow-hidden bg-navy-900 py-20 text-white">
-          <Image src="/images/banner-client.jpg" alt="" fill sizes="100vw" className="object-cover object-right opacity-50 rtl:-scale-x-100" /><div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/85 to-navy-950/30 rtl:bg-gradient-to-l" aria-hidden /><div className="grid-pattern absolute inset-0 opacity-70" aria-hidden />
+          <Image src="/images/security-gavel.jpg" alt="" fill sizes="100vw" className="-scale-x-100 object-cover object-center opacity-70 rtl:scale-x-100" />
+          <div className="absolute inset-0 bg-gradient-to-r from-navy-950 via-navy-950/80 to-navy-950/20 rtl:bg-gradient-to-l" aria-hidden />
           <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
             <div className="max-w-xl">
               <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-gold-400 ring-1 ring-white/15"><Lock className="h-6 w-6" aria-hidden /></span>
@@ -161,11 +208,20 @@ export default async function Home() {
         </section>
 
         {/* ---------- final CTA ---------- */}
-        <section aria-labelledby="cta-title" className="force-light bg-navy-900 py-16 text-center text-white">
-          <div className="mx-auto max-w-2xl px-4 sm:px-6">
-            <h2 id="cta-title" className="font-display text-3xl font-semibold tracking-tight">{t('site.cta.title')}</h2>
-            <p className="mt-3 text-slate-300">{t('site.cta.text')}</p>
-            <Link href="/contact" className={`${goldBtnCls} mt-8`}>{t('site.hero.cta')}</Link>
+        <section aria-labelledby="cta-title" className="force-light relative overflow-hidden bg-navy-900 py-20 text-center text-white sm:py-28">
+          <Image src="/images/cta-office.jpg" alt="" fill sizes="100vw" className="object-cover object-center opacity-70" />
+          <div className="absolute inset-0 bg-gradient-to-b from-navy-950/80 via-navy-950/55 to-navy-950/85" aria-hidden />
+          <div className="relative mx-auto max-w-2xl px-4 sm:px-6">
+            <h2 id="cta-title" className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">{t('site.cta.title')}</h2>
+            <p className="mt-4 text-slate-300 sm:text-lg">{t('site.cta.text')}</p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link href="/contact" className={goldBtnCls}>{t('site.hero.cta')}</Link>
+              {wa && (
+                <a href={wa} target="_blank" rel="noopener noreferrer" className={`${ghostOnDarkBtnCls} h-11 px-5 text-sm`}>
+                  <MessageCircle className="h-4 w-4 text-emerald-400" aria-hidden /> {t('site.contact.whatsapp')}
+                </a>
+              )}
+            </div>
           </div>
         </section>
       </main>

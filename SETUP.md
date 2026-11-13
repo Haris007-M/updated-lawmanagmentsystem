@@ -24,7 +24,7 @@ Copy `.env.example` to `.env.local` and fill it in.
 | `NEXT_PUBLIC_SITE_URL` | yes in production | `https://your-domain.com`; used in email links |
 | `SMTP_HOST/PORT/USER/PASS`, `MAIL_FROM` | recommended | See [docs/SMTP.md](docs/SMTP.md). Without it, invitation links are shown on screen to copy and no reminder emails are sent |
 | `CRON_SECRET` | yes in production | Long random string for the daily job |
-| `NEXT_PUBLIC_APP_NAME`, `NEXT_PUBLIC_COMPANY_NAME`, `NEXT_PUBLIC_SUPPORT_EMAIL`, `NEXT_PUBLIC_SUPPORT_WHATSAPP`, `NEXT_PUBLIC_JURISDICTION` | before launch | Branding and legal pages |
+| `NEXT_PUBLIC_APP_NAME`, `NEXT_PUBLIC_COMPANY_NAME`, `NEXT_PUBLIC_SUPPORT_EMAIL`, `NEXT_PUBLIC_SUPPORT_WHATSAPP` | before launch | Branding and legal pages |
 | `NEXT_PUBLIC_TIMEZONE` | optional | Default `Asia/Karachi` |
 
 Restart `npm run dev` after every change to `.env.local`.
